@@ -15,6 +15,7 @@ describe('SpellCheckService', function() {
         var opts = {};
 
         opts.log = MockLogger.createLogger('SpellCheckService');
+        opts.hub = {};
 
         return opts;
     };
@@ -23,7 +24,9 @@ describe('SpellCheckService', function() {
         var service = new SpellCheckService( createOptions()),
             methods = [
                 'start',
-                'createProducer'
+                'createMessageProducer',
+                'messageHandler',
+                'checkSpelling'
             ];
 
         it('should create an instance of AccessService', function() {
