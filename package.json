@@ -11,24 +11,25 @@
     "test": "grunt testAll"
   },
   "keywords": [
-    "authentication",
-    "authorization",
+    "spell",
+    "spellcheck",
+    "spellchecker",
+    "websockets",
     "message",
     "messaging",
-    "websockets",
     "sockets",
     "pub/sub",
     "producer/consumer"
   ],
   "dependencies": {
     "background-service-runner": "^0.90.20",
-    "commander": "^2.3.0",
     "faye": "^1.0.3",
     "lodash": "~2.4.1",
     "moment": "^2.8.1",
     "node-messaging-commons": "^0.90.29",
     "node-uuid": "~1.4.1",
-    "simple-node-logger": "^0.91.96"
+    "simple-node-logger": "^0.91.96",
+    "spellchecker": "^1.0.1"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
