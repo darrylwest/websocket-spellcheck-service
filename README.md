@@ -34,6 +34,13 @@ Here is a short snippet of the browser code:
     <script src="SpellCheckClient.js"></script>
     <script>
         var client;
+        
+        var start = function() {
+        	client = SpellCheckClient.createInstance();
+            
+            // make available for debugging
+            window.client = client;
+        };
 
         // add code here ...
     </script>

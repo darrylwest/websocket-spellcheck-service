@@ -30,8 +30,8 @@ var SpellCheckClient = function(options) {
     this.closeSockets = function() {
         var hub = client.createHub();
 
-        hub.unsubscribe( user.privateChannel );
-        hub.unsubscribe( '/access' );
+        // hub.unsubscribe( user.privateChannel );
+        hub.unsubscribe( '/spellcheck' );
 
         log.info('channels closed');
     };
@@ -43,7 +43,7 @@ var SpellCheckClient = function(options) {
      */
     this.openSpellCheckChannel = function() {
         var hub = client.createHub(),
-            channel = hub.subscribe( '/access', client.accessMessageHandler );
+            channel = hub.subscribe( '/spellcheck', client.accessMessageHandler );
 
         log.info('open the access channel: ', channel);
 
@@ -60,7 +60,7 @@ var SpellCheckClient = function(options) {
      */
     this.openPrivateChannel = function() {
         var hub = client.createHub(),
-            channel = hub.subscribe( user.privateChannel, client.privateMessageHandler );
+            channel = hub.subscribe( 'pc', client.privateMessageHandler );
 
         log.info('open the private channel: ', channel);
 
@@ -68,7 +68,7 @@ var SpellCheckClient = function(options) {
             log.info('private channel alive...');
             var request = {};
 
-            request.user = { id:user.id, session:user.session };
+            // request.user = { id:user.id, session:user.session };
             request.action = 'openPrivateChannel';
 
             accessQueue.push( request );
@@ -141,12 +141,12 @@ var SpellCheckClient = function(options) {
     if (!log) throw new Error('access client must be constructed with a log');
 };
 
-AccessClient.createInstance = function(opts) {
+SpellCheckClient.createInstance = function(opts) {
     'use strict';
 
     if (!opts) opts = {};
 
-    opts.version = '2014.08.29';
+    opts.version = '2014.08.30';
 
     opts.log = RemoteLogger.createLogger('SpellCheckClient');
 
