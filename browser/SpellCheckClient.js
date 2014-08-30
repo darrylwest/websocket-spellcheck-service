@@ -5,23 +5,21 @@
  * @created: 8/27/14
  */
 
-var AccessClient = function(options) {
+var SpellCheckClient = function(options) {
     'use strict';
 
     var client = this,
         log = options.log,
-        user = options.user,
         socketHost = options.socketHost,
         accessHub,
         accessQueue = [],
         aid = Math.random().toString(20),
-        pid = Math.random().toString(20),
-        accessToken;
+        pid = Math.random().toString(20);
 
     /**
-     * open the public/private channels and begin exchanges
+     * open the public/private channels to begin exchanges
      */
-    this.authenticate = function() {
+    this.openSockets = function() {
         this.openAccessChannel();
         this.openPrivateChannel();
     };
@@ -43,7 +41,7 @@ var AccessClient = function(options) {
      *
      * @returns access channel
      */
-    this.openAccessChannel = function() {
+    this.openSpellCheckChannel = function() {
         var hub = client.createHub(),
             channel = hub.subscribe( '/access', client.accessMessageHandler );
 
@@ -102,21 +100,18 @@ var AccessClient = function(options) {
      *
      * @param msg - a wrapped message request
      */
-    this.accessMessageHandler = function(msg) {
+    this.spellCheckMessageHandler = function(msg) {
         if (accessQueue.length > 0) {
             var request = accessQueue.pop(),
                 message;
 
             // grab the current token
-            accessToken = request.token = msg.message.token;
+            request.token = msg.message.token;
 
             message = client.wrapMessage( aid, request );
             log.info( JSON.stringify( message ) );
 
-            accessHub.publish( '/access', message );
-
-            // now create and queue the private message
-            client.createAuthMessage();
+            accessHub.publish( '/spellcheck', message );
         }
     };
 
@@ -135,89 +130,15 @@ var AccessClient = function(options) {
                     client.sendPrivateMessage();
                     break;
                 case 'ok':
-                    log.info('load and show the main page');
-                    client.closeSockets();
-                    break;
-                case 'failed':
-                    log.info('load and show the error page');
-                    client.closeSockets();
+                    log.info('return the spell word and suggestions');
+
                     break;
             }
         }
     };
 
-    /**
-     * send out the private message with encoded user pw
-     */
-    this.sendPrivateMessage = function() {
-        var message = client.createAuthMessage();
-        log.info('send the authenticate message: ', JSON.stringify( message ));
-
-        accessHub.publish( user.privateChannel, message );
-    };
-
-    /**
-     * creates the user's authentication message with the current access token, pw, etc
-     *
-     * @returns the wrapped message
-     */
-    this.createAuthMessage = function() {
-        log.info('access key: ', user.accessKey, ', token: ', accessToken );
-
-        var request = {};
-
-        // create a message hash for the access key and send: createDigest
-        request.id = user.id;
-        request.hash = user.accessKey;
-        request.session = user.session;
-        request.action = 'authenticate';
-
-        return client.wrapMessage( pid, request );
-    };
-
-    /**
-     * set the user's password as prompted from the UI
-     *
-     * @param key - the user password
-     */
-    this.setUserAccessKey = function(key) {
-        user.accessKey = client.calculateDigest( key, user.privateChannel );
-        log.info('hash: ', user.accessKey);
-    };
-
-    /**
-     * calculate a digestfrom value and key
-     *
-     * @param value - string value to encode
-     * @param key - key to use for encoding
-     * @returns {string}
-     */
-    this.calculateDigest = function(value, key) {
-        var hash,
-            hmac = CryptoJS.algo.HMAC.create( CryptoJS.algo.SHA256, key),
-            sash;
-
-        hmac.update( value );
-        hash = hmac.finalize();
-
-        sash = hash.toString( CryptoJS.enc.Hex );
-
-        log.info('calculated hash: ', sash, ' from value: ', value, ' and key: ', key);
-
-        return sash;
-    };
-
-    this.createHub = function() {
-        if (!accessHub) {
-            accessHub = new Faye.Client( socketHost, { timeout:10 });
-        }
-
-        return accessHub;
-    };
-
     // constructor validations
     if (!log) throw new Error('access client must be constructed with a log');
-    if (!user) throw new Error('access client must be constructed with a user');
 };
 
 AccessClient.createInstance = function(opts) {
@@ -225,21 +146,21 @@ AccessClient.createInstance = function(opts) {
 
     if (!opts) opts = {};
 
-    opts.version = '2014.08.28';
+    opts.version = '2014.08.29';
 
-    opts.log = RemoteLogger.createLogger('AccessClient');
+    opts.log = RemoteLogger.createLogger('SpellCheckClient');
 
     // simulate an ajax fetch...
 
     opts.host = 'http://localhost:29169';
     opts.hubName = '/MessageHub';
-    opts.appkey = 'b55d91a2-a68f-48a1-8f4b-c4dfc65d60bb';
+    opts.appkey = '71268c55-a8b3-4839-a1f5-34e3d6e70fdd';
 
     opts.socketHost = opts.host + opts.hubName;
 
-    return new AccessClient( opts );
+    return new SpellCheckClient( opts );
 };
 
 if (typeof module === 'object') {
-    module.exports = AccessClient;
+    module.exports = SpellCheckClient;
 }

@@ -47,7 +47,7 @@ module.exports = function(grunt) {
                 '<%= dirs.lib %>/*/*.js',
                 '<%= dirs.test %>/*/*.js',
                 '<%= dirs.test %>/*.js',
-                '<%= dirs.browser %>/AccessClient.js'
+                '<%= dirs.browser %>/SpellCheckClient.js'
             ]
         },
         mochaTest: {

@@ -35,7 +35,6 @@ Here is a short snippet of the browser code:
     <script>
         var client;
 
-
         // add code here ...
     </script>
 </head>
