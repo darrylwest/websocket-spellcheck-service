@@ -1,0 +1,7 @@
+{
+    "port":29169,
+    "hubName":"/MessageHub",
+    "channels":[ "/spellcheck" ],
+    "appkey":"71268c55-a8b3-4839-a1f5-34e3d6e70fdd"
+}
+
