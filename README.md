@@ -3,7 +3,7 @@
 
 A real-time spell checking service over web sockets.
 
-<!-- [![NPM version](https://badge.fury.io/js/websocket-access-service.svg)](http://badge.fury.io/js/websocket-access-service)  
+<!-- [![NPM version](https://badge.fury.io/js/websocket-spellcheck-service.svg)](http://badge.fury.io/js/websocket-spellcheck-service)  
 [![Build Status](https://travis-ci.org/darrylwest/websocket-spellcheck-service.svg?branch=master)](https://travis-ci.org/darrylwest/websocket-spellcheck-service) [![Dependency Status](https://david-dm.org/darrylwest/websocket-spellcheck-service.svg)](https://david-dm.org/darrylwest/websocket-spellcheck-service) -->
 
 ## Introduction
@@ -28,7 +28,7 @@ Here is a short snippet of the browser code:
 <!DOCTYPE html>
 <html>
 <head>
-    <title>test access page</title>
+    <title>test spellcheck page</title>
     <script src="faye-browser.js"></script>
     <script src="RemoteLogger.js"></script>
     <script src="SpellCheckClient.js"></script>
@@ -53,7 +53,7 @@ The project includes a "bin" folder with a run/start/stop and status scripts.  T
     service.start();
 ~~~
 
-If you have a message service running on this port, then this is enough to start the public producer channel to periodically send out access tokens (one per second).  To create and start a generic message service, see [this commons project](https://www.npmjs.org/package/node-messaging-commons).
+If you have a message service running on this port, then this is enough to start the public producer channel that responds to spell check requests.  To create and start a generic message service, see [this commons project](https://www.npmjs.org/package/node-messaging-commons).
 
 ## Configuration
 
@@ -64,7 +64,7 @@ Here is a sample configuration file.
     "port":29169,
     "hubName":"/MessageHub",
     "channels":[ "/spellcheck" ],
-    "appkey":"???"
+    "appkey":"71268c55-a8b3-4839-a1f5-34e3d6e70fdd"
 }
 ~~~
 
