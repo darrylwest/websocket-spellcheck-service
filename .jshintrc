@@ -27,6 +27,7 @@
     "curly": false,
     "globals": {
         "RemoteLogger":true,
+        "AbstractMessageClient":true,
         "Faye":true,
         "SpellCheckClient":true,
         "describe":true,

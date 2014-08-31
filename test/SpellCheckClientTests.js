@@ -27,6 +27,9 @@ describe('SpellCheckClient', function() {
                 'start',
                 'spellCheckMessageHandler',
                 'checkSpelling',
+                // inherited
+                'subscribe',
+                'publish',
                 'createHub',
                 'wrapMessage'
             ];

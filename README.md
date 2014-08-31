@@ -23,31 +23,30 @@ The Websocket Spellcheck Service...
 
 ### Client/Browser
 
-The project includes a "browser" folder with enough to create a small authentication page.  Once a user enter's their password, it is set then "authenicate" is called. If the backend services are up, then all should work as expected.
-
-Here is a short snippet of the browser code:
+The project includes a "browser" folder with enough to create a websocket spell checker.  Here is a short snippet of the browser code:
 
 ~~~
 <!DOCTYPE html>
 <html>
 <head>
-    <title>test spellcheck page</title>
-    <script src="faye-browser.js"></script>
-    <script src="RemoteLogger.js"></script>
+    <title>spell check page</title>
+    <script src="browser-messaging-commons.js"></script>
+    <script src="messaging-config.js"></script>
     <script src="SpellCheckClient.js"></script>
     <script>
         var client;
 
         var start = function() {
-        	client = SpellCheckClient.createInstance();
+            var options = readMessagingConfig();
+            console.log( JSON.stringify( options ));
+
+            client = SpellCheckClient.createInstance( options );
 
             client.start();
 
-            // make available for debugging
             window.client = client;
         };
 
-        // add code here ...
     </script>
 </head>
 ~~~

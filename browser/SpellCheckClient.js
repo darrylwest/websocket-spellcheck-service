@@ -4,30 +4,28 @@
  * @author: darryl.west@roundpeg.com
  * @created: 8/27/14
  */
+if (typeof require === 'function') {
+    AbstractMessageClient = require('./AbstractMessageClient');
+}
 
 var SpellCheckClient = function(options) {
     'use strict';
 
     var client = this,
         log = options.log,
-        socketHost = options.socketHost,
         channelName = '/spellcheck',
-        hub,
         appkey = options.appkey, // the spell checker's ssid
-        checkCallback = options.checkCallback,
+        checkResultCallback = options.checkResultCallback,
         cid = Math.random().toString(20);
+
+    AbstractMessageClient.extend( client, options );
 
     /**
      * open the public/private channels to begin exchanges
      */
     this.start = function() {
-        client.createHub();
-
-        log.info('open the access channel: ', channelName);
-
-        hub.subscribe( channelName, client.spellCheckMessageHandler ).then(function() {
-            log.info('channel ', channelName, ' alive...');
-        });
+        log.info('open the spell-check channel: ', channelName);
+        client.subscribe( channelName, client.spellCheckMessageHandler );
     };
 
     /**
@@ -41,6 +39,10 @@ var SpellCheckClient = function(options) {
         if (msg.ssid === appkey) {
             log.info( JSON.stringify( msg ));
         }
+
+        if (checkResultCallback) {
+            checkResultCallback( msg.message );
+        }
     };
 
     this.checkSpelling = function(word) {
@@ -51,32 +53,7 @@ var SpellCheckClient = function(options) {
             action:'check'
         };
 
-        hub.publish( channelName, client.wrapMessage( cid, request ) );
-    };
-
-    this.createHub = function() {
-        if (!hub) {
-            hub = new Faye.Client( socketHost, { timeout:50 });
-        }
-
-        return hub;
-    };
-
-    /**
-     * create the standard wrapper
-     *
-     * @param id the channel id
-     * @param request a request object
-     * @returns the wrapped message request
-     */
-    this.wrapMessage = function(id, request) {
-        var message = {
-            ssid:id,
-            ts:Date.now(),
-            message:request
-        };
-
-        return message;
+        client.publish( channelName, cid, request );
     };
 
     // constructor validations
@@ -88,17 +65,8 @@ SpellCheckClient.createInstance = function(opts) {
 
     if (!opts) opts = {};
 
-    opts.version = '2014.08.30';
-
+    opts.version = '2014.08.31';
     opts.log = RemoteLogger.createLogger('SpellCheckClient');
-
-    // simulate an ajax fetch...
-
-    opts.host = 'http://localhost:29169';
-    opts.hubName = '/MessageHub';
-    opts.appkey = '71268c55-a8b3-4839-a1f5-34e3d6e70fdd';
-
-    opts.socketHost = opts.host + opts.hubName;
 
     return new SpellCheckClient( opts );
 };
