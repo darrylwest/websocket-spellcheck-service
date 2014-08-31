@@ -11,9 +11,6 @@ test:
 watch:
 	@grunt server
 
-browser:
-	cat browser/SpellCheckClient.js
-
 .PHONY: install
 .PHONY: npm
 .PHONY: test
