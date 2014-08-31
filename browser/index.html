@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>test access page</title>
+    <title>spell check page</title>
     <script src="faye-browser.js"></script>
     <script src="RemoteLogger.js"></script>
     <script src="SpellCheckClient.js"></script>
     <script>
         var client;
 
+        var start = function() {
+            client = SpellCheckClient.createInstance();
+
+            client.start();
+
+            window.client = client;
+        };
+
     </script>
 </head>
-<body>
+<body onload="start();">
 
 <!-- create text input box and go button -->
 

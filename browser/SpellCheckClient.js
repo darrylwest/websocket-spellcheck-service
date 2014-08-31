@@ -11,70 +11,55 @@ var SpellCheckClient = function(options) {
     var client = this,
         log = options.log,
         socketHost = options.socketHost,
-        accessHub,
-        accessQueue = [],
-        aid = Math.random().toString(20),
-        pid = Math.random().toString(20);
+        channelName = '/spellcheck',
+        hub,
+        appkey = options.appkey, // the spell checker's ssid
+        checkCallback = options.checkCallback,
+        cid = Math.random().toString(20);
 
     /**
      * open the public/private channels to begin exchanges
      */
-    this.openSockets = function() {
-        this.openAccessChannel();
-        this.openPrivateChannel();
+    this.start = function() {
+        client.createHub();
+
+        log.info('open the access channel: ', channelName);
+
+        hub.subscribe( channelName, client.spellCheckMessageHandler ).then(function() {
+            log.info('channel ', channelName, ' alive...');
+        });
     };
 
     /**
-     * close all socket channels
-     */
-    this.closeSockets = function() {
-        var hub = client.createHub();
-
-        // hub.unsubscribe( user.privateChannel );
-        hub.unsubscribe( '/spellcheck' );
-
-        log.info('channels closed');
-    };
-
-    /**
-     * open / subscribe to the public access channel
+     * the public access channel message handler; grab the current token and queue
+     * the outgoing private message
      *
-     * @returns access channel
+     * @param msg - a wrapped message request
      */
-    this.openSpellCheckChannel = function() {
-        var hub = client.createHub(),
-            channel = hub.subscribe( '/spellcheck', client.accessMessageHandler );
+    this.spellCheckMessageHandler = function(msg) {
 
-        log.info('open the access channel: ', channel);
-
-        channel.then(function() {
-            log.info('access channel alive...');
-        });
-
-        return channel;
+        if (msg.ssid === appkey) {
+            log.info( JSON.stringify( msg ));
+        }
     };
 
-    /**
-     * open the user's private channel
-     * @returns private channel
-     */
-    this.openPrivateChannel = function() {
-        var hub = client.createHub(),
-            channel = hub.subscribe( 'pc', client.privateMessageHandler );
+    this.checkSpelling = function(word) {
+        log.info('spell check the word: ', word);
 
-        log.info('open the private channel: ', channel);
+        var request = {
+            word:word,
+            action:'check'
+        };
 
-        channel.then(function() {
-            log.info('private channel alive...');
-            var request = {};
+        hub.publish( channelName, client.wrapMessage( cid, request ) );
+    };
 
-            // request.user = { id:user.id, session:user.session };
-            request.action = 'openPrivateChannel';
+    this.createHub = function() {
+        if (!hub) {
+            hub = new Faye.Client( socketHost, { timeout:50 });
+        }
 
-            accessQueue.push( request );
-        });
-
-        return channel;
+        return hub;
     };
 
     /**
@@ -92,49 +77,6 @@ var SpellCheckClient = function(options) {
         };
 
         return message;
-    };
-
-    /**
-     * the public access channel message handler; grab the current token and queue
-     * the outgoing private message
-     *
-     * @param msg - a wrapped message request
-     */
-    this.spellCheckMessageHandler = function(msg) {
-        if (accessQueue.length > 0) {
-            var request = accessQueue.pop(),
-                message;
-
-            // grab the current token
-            request.token = msg.message.token;
-
-            message = client.wrapMessage( aid, request );
-            log.info( JSON.stringify( message ) );
-
-            accessHub.publish( '/spellcheck', message );
-        }
-    };
-
-    /**
-     * the private channel message response handler; processes ready, ok, and failed
-     *
-     * @param msg - a wrapped response
-     */
-    this.privateMessageHandler = function(msg) {
-        log.info( 'p-msg: ', JSON.stringify( msg ));
-
-        var status = msg.message.status;
-        if (status) {
-            switch (status) {
-                case 'ready':
-                    client.sendPrivateMessage();
-                    break;
-                case 'ok':
-                    log.info('return the spell word and suggestions');
-
-                    break;
-            }
-        }
     };
 
     // constructor validations

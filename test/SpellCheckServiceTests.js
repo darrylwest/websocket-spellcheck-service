@@ -16,6 +16,7 @@ describe('SpellCheckService', function() {
 
         opts.log = MockLogger.createLogger('SpellCheckService');
         opts.hub = {};
+        opts.appkey = 'test-server';
 
         return opts;
     };
@@ -29,7 +30,7 @@ describe('SpellCheckService', function() {
                 'checkSpelling'
             ];
 
-        it('should create an instance of AccessService', function() {
+        it('should create an instance of SpellCheckService', function() {
             should.exist( service );
             service.should.be.instanceof( SpellCheckService );
         });

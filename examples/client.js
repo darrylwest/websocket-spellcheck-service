@@ -18,7 +18,9 @@ var dash = require('lodash'),
     idx = 0;
 
 consumer.onMessage(function(msg) {
-    console.log( msg );
+    if (msg.ssid === config.appkey) {
+        console.log( msg );
+    }
 });
 
 setInterval(function() {
