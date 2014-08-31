@@ -3,11 +3,7 @@
 
 A real-time spell checking service over web sockets.
 
-[![Build Status](https://travis-ci.org/darrylwest/websocket-spellcheck-service.svg?branch=develop)](https://travis-ci.org/darrylwest/websocket-spellcheck-service) [![Dependency Status](https://david-dm.org/darrylwest/websocket-spellcheck-service.svg)](https://david-dm.org/darrylwest/websocket-spellcheck-service)
-
-<!--
-[![NPM version](https://badge.fury.io/js/websocket-spellcheck-service.svg)](http://badge.fury.io/js/websocket-spellcheck-service)
--->
+[![NPM version](https://badge.fury.io/js/websocket-spellcheck-service.svg)](http://badge.fury.io/js/websocket-spellcheck-service) [![Build Status](https://travis-ci.org/darrylwest/websocket-spellcheck-service.svg?branch=develop)](https://travis-ci.org/darrylwest/websocket-spellcheck-service) [![Dependency Status](https://david-dm.org/darrylwest/websocket-spellcheck-service.svg)](https://david-dm.org/darrylwest/websocket-spellcheck-service)
 
 ## Introduction
 
