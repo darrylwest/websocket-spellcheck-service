@@ -1,4 +1,4 @@
-# Websocket Access Service
+# Websocket Spell Check Service
 - - -
 
 A real-time spell checking service over web sockets.
@@ -93,4 +93,4 @@ Unit tests include should/specs, jshint and validate-package.  Tests can be run 
 ~~~
 
 - - -
-<p><small><em>Copyright © 2014, rain city software | Version 0.90.13</em></small></p>
+<p><small><em>Copyright © 2014, rain city software | Version 0.90.15</em></small></p>
