@@ -7,7 +7,7 @@ A real-time spell checking service over web sockets.
 
 ## Introduction
 
-The Websocket Spellcheck Service provides a remote real-time service to check word spelling from browser or other text input applications.
+The Websocket Spellcheck Service provides a remote real-time service to check word spelling from browser or other text input applications.  The spell checker is based on [node-spellchecker](https://github.com/atom/node-spellchecker) and uses the hunspell project.
 
 ## Installation
 
