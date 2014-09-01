@@ -47,6 +47,43 @@ The project includes a "browser" folder with enough to create a websocket spell 
 </head>
 ~~~
 
+The clint API has a single method: checkSpelling(word).  The word is sent down the socket with a request to check the spelling with the response being delivered to a closure called checkResultCallback that is set in the constuctor options.  If the spelling is correct, the reponse from the service looks like this:
+
+~~~
+{
+	"word":"expectorant",
+    "correct":true
+}
+~~~
+
+If an error is detected in the spelling, the response includes spelling suggestions and looks like this:
+
+~~~
+{
+	"word":"spitx",
+    "correct":false,
+    "suggestions":["spits","spit","spite","spitz"]
+}
+~~~
+
+Or this:
+
+~~~
+{
+	"word":"expector",
+    "correct":false,
+    "suggestions":[
+    	"expiator",
+        "expeditor",
+        "expect",
+        "expected",
+        "expects",
+        "expect or",
+        "expect-or"
+    ]
+}
+~~~
+
 ### Server
 
 The project includes a "bin" folder with a run/start/stop and status scripts.  The run script is the same as start, but it runs in the forgound.  It looks something like this:
