@@ -1,5 +1,5 @@
 /**
- * @class AccessClient
+ * @class SpellCheckClient
  *
  * @author: darryl.west@roundpeg.com
  * @created: 8/27/14
