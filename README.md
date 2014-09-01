@@ -7,7 +7,7 @@ A real-time spell checking service over web sockets.
 
 ## Introduction
 
-The Websocket Spellcheck Service...
+The Websocket Spellcheck Service provides a remote real-time service to check word spelling from browser or other text input applications.
 
 ## Installation
 
@@ -93,4 +93,4 @@ Unit tests include should/specs, jshint and validate-package.  Tests can be run 
 ~~~
 
 - - -
-<p><small><em>Copyright © 2014, rain city software | Version 0.90.12</em></small></p>
+<p><small><em>Copyright © 2014, rain city software | Version 0.90.13</em></small></p>

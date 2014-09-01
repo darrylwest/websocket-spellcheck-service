@@ -1,6 +1,6 @@
 {
   "name": "websocket-spellcheck-service",
-  "version": "00.90.12",
+  "version": "00.90.13",
   "description": "A real-time spell checker based on websockets",
   "main": "index.js",
   "repository": {
