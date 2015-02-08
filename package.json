@@ -1,6 +1,6 @@
 {
   "name": "websocket-spellcheck-service",
-  "version": "00.90.18",
+  "version": "00.90.19",
   "description": "A real-time spell checker service based on faye pub/sub websockets",
   "main": "index.js",
   "repository": {
@@ -24,12 +24,12 @@
   "dependencies": {
     "background-service-runner": "^0.90.22",
     "faye": "^1.1.0",
-    "lodash": "^3.0.0",
+    "lodash": "^3.1.0",
     "moment": "^2.8.1",
     "node-messaging-commons": "^0.90.37",
     "node-uuid": "^1.4.1",
     "simple-node-logger": "^0.92.14",
-    "spellchecker": "^1.0.1"
+    "spellchecker": "^2.0.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
